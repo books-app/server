@@ -37,7 +37,7 @@ app.post('/books', function(request, response) {
       request.body.author,
       request.body.ISBN,
       request.body.pic_url,
-      request.body.description,
+      request.body.descr,
 
     ]
   )
@@ -64,7 +64,7 @@ function createTable() {
       author VARCHAR(256),
       ISBN INTEGER,
       pic_url VARCHAR(256),
-      description VARCHAR(256)
+      descr VARCHAR(256)
     );`
   )
   .then(function(response) {
