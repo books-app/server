@@ -14,14 +14,10 @@ client.connect();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static('./public'));
 
-// app.get('/', function(request, response) {
-//   response.sendFile('./public/index.html');
-// });
 
-app.get('/db/person', function(request, response) {
-  client.query('SELECT * FROM persons;')
+app.get('/', function(request, response) {
+  client.query('SELECT * FROM books;')
   .then(function(data) {
     response.send(data);
   })
@@ -30,15 +26,19 @@ app.get('/db/person', function(request, response) {
   });
 });
 
-app.post('/db/person', function(request, response) {
+app.post('/', function(request, response) {
   client.query(`
-    INSERT INTO persons(name, age, ninja)
-    VALUES($1, $2, $3);
+    INSERT INTO books(book_id, book_title, author, isbn, pic_url, description )
+    VALUES($1, $2, $3, $4, $5, $6);
     `,
     [
-      request.body.name,
-      request.body.age,
-      request.body.ninja
+      request.body.book_id,
+      request.body.book_title,
+      request.body.author,
+      request.body.isbn,
+      request.body.pic_url,
+      request.body.description,
+
     ]
   )
   .then(function(data) {
@@ -57,14 +57,17 @@ app.listen(PORT, () => {
 
 function createTable() {
   client.query(`
-    CREATE TABLE IF NOT EXISTS persons(
+    CREATE TABLE IF NOT EXISTS books(
       id SERIAL PRIMARY KEY,
-      name VARCHAR(256),
-      age INTEGER,
-      ninja BOOLEAN
+      book_id INTEGER,
+      book_title VARCHAR(256),
+      author VARCHAR(256)
+      isbn INTEGER,
+      pic_url VARCHAR(256)
+      description VARCHAR(256)
     );`
   )
   .then(function(response) {
-    console.log('created table in db!!!!');
+    console.log('books table are done');
   });
 };
