@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.get('/', function(request, response) {
+app.get('/books', function(request, response) {
   client.query('SELECT * FROM books;')
   .then(function(data) {
     response.send(data);
@@ -26,7 +26,7 @@ app.get('/', function(request, response) {
   });
 });
 
-app.post('/', function(request, response) {
+app.post('/books', function(request, response) {
   client.query(`
     INSERT INTO books(book_id, book_title, author, isbn, pic_url, description )
     VALUES($1, $2, $3, $4, $5, $6);
