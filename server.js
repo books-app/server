@@ -10,7 +10,9 @@ const PORT = process.env.PORT;
 const app = express();
 
 
-const conString = 'https://ryanandrii-booksapp.herokuapp.com';
+
+
+const conString = process.env.DATABASE_URL;
 const client = new pg.Client(conString);
 
 client.connect();
