@@ -28,7 +28,7 @@ app.get('/books', function(request, response) {
 
 app.post('/books', function(request, response) {
   client.query(`
-    INSERT INTO books( book_title, author, isbn, pic_url, description )
+    INSERT INTO books( book_title, author, ISBN, pic_url, description )
     VALUES($1, $2, $3, $4, $5, );
     `,
     [
