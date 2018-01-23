@@ -3,7 +3,7 @@
 
 const express = require('express');
 const pg = require('pg');
-const cors = require('cors');
+// const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const PORT = process.env.PORT;
