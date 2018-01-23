@@ -35,14 +35,14 @@ app.post('/books', function(request, response) {
       request.body.book_id,
       request.body.book_title,
       request.body.author,
-      request.body.isbn,
+      request.body.ISBN,
       request.body.pic_url,
       request.body.description,
 
     ]
   )
   .then(function(data) {
-    response.redirect('/');
+    response.redirect('/books');
   })
   .catch(function(err) {
     console.error(err);
@@ -61,9 +61,9 @@ function createTable() {
       id SERIAL PRIMARY KEY,
       book_id INTEGER,
       book_title VARCHAR(256),
-      author VARCHAR(256)
-      isbn INTEGER,
-      pic_url VARCHAR(256)
+      author VARCHAR(256),
+      ISBN INTEGER,
+      pic_url VARCHAR(256),
       description VARCHAR(256)
     );`
   )
