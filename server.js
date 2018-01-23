@@ -28,13 +28,13 @@ app.get('/books', function(request, response) {
 
 app.post('/books', function(request, response) {
   client.query(`
-    INSERT INTO books( book_title, author, ISBN, pic_url, description )
-    VALUES($1, $2, $3, $4, $5, );
+    INSERT INTO books( book_title, author, isbn, pic_url, descr )
+    VALUES($1, $2, $3, $4, $5 );
     `,
     [
       request.body.book_title,
       request.body.author,
-      request.body.ISBN,
+      request.body.isbn,
       request.body.pic_url,
       request.body.descr,
 
@@ -60,7 +60,7 @@ function createTable() {
       id SERIAL PRIMARY KEY,
       book_title VARCHAR(256),
       author VARCHAR(256),
-      ISBN VARCHAR(256),
+      isbn VARCHAR(256),
       pic_url VARCHAR(256),
       descr VARCHAR(256)
     );`
