@@ -1,3 +1,5 @@
+import { request } from 'https';
+
 'use strict';
 
 const cors = require('cors');
@@ -6,6 +8,7 @@ const pg = require('pg');
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT;
+
 
 const connectionString = process.env.DATABASE_URL;
 const client = new pg.Client(connectionString);
@@ -18,6 +21,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/books', function(request, response) {
   client.query('SELECT * FROM books;')
+  .then(function(data) {
+    response.send(data);
+  })
+  .catch(function(err) {
+    console.error(err);
+  });
+});
+
+app.get('/books/:id', function(request, response) {
+  client.query(`SELECT FROM books WHERE id= ${request.body};`)
   .then(function(data) {
     response.send(data);
   })
