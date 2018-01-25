@@ -29,15 +29,15 @@ app.get('/books', function(request, response) {
   });
 });
 
-app.get('/books/:book_id', function(request, response) {
-  client.query(`SELECT * FROM books WHERE id= ${request.params.book_id};`)
-  .then(function(data) {
-    response.send(data);
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
-});
+// app.get('/books/:book_id', function(request, response) {
+//   client.query(`SELECT * FROM books WHERE id= ${request.params.book_id};`)
+//   .then(function(data) {
+//     response.send(data);
+//   })
+//   .catch(function(err) {
+//     console.error(err);
+//   });
+// });
 
 app.post('/books', function(request, response) {
   client.query(`
