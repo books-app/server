@@ -29,7 +29,7 @@ app.get('/books', function(request, response) {
   });
 });
 
-app.get('/books/:id', function(request, response) {
+app.get('/books/', function(request, response) {
   client.query(`SELECT FROM books WHERE id= ${request.body};`)
   .then(function(data) {
     response.send(data);
