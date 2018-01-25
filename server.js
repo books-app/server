@@ -29,8 +29,8 @@ app.get('/books', function(request, response) {
   });
 });
 
-app.get('/books/', function(request, response) {
-  client.query(`SELECT FROM books WHERE id= ${request.body};`)
+app.get('/books/:book_id', function(request, response) {
+  client.query(`SELECT * FROM books WHERE id= ${request.params.book_id};`)
   .then(function(data) {
     response.send(data);
   })
