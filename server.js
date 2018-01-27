@@ -17,57 +17,52 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.get('/books', function(request, response) {
-  client.query('SELECT * FROM books;')
-  .then(function(data) {
-    response.send(data);
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
+//Getting stuff from the database to render on pages
+app.get('/books', (req, res) => {
+  client.query(`SELECT * FROM books;`)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
 });
 
-app.get('/books/:book_id', function(request, response) {
-  client.query(`SELECT * FROM books WHERE id= ${request.params.book_id};`)
-  .then(function(data) {
-    response.send(data);
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
+//Getting a single book
+app.get('/books/:id', (req, res) => {
+  client.query(`SELECT * FROM books WHERE id=${req.params.book_id}`)
+    .then(results => res.send(results.rows))
+    .catch(console.error);
 });
 
-app.delete('/books/:book_id', function(request, response) {
-  client.query(`SELECT * FROM books WHERE id= ${request.params.book_id};`)
-  .then(function(data) {
-    response.send(data);
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
-});
-
-app.post('/books', function(request, response) {
+//Adding a book to the database
+app.post('/books', bodyParser, (req, res) => {
+  let {title, author, isbn, url, description} = req.body;
   client.query(`
-    INSERT INTO books( book_title, author, isbn, pic_url, descr )
-    VALUES($1, $2, $3, $4, $5 );
-    `,
-    [
-      request.body.book_title,
-      request.body.author,
-      request.body.isbn,
-      request.body.pic_url,
-      request.body.descr,
-
-    ]
+      INSERT INTO books(title, author, isbn, url, description) VALUES($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING`,
+    [title, author, isbn, url, description]
   )
-  .then(function(data) {
-    response.redirect('/books');
-  })
-  .catch(function(err) {
-    console.error(err);
-  });
+    .then(res.sendStatus(201))
+    .catch(console.error);
 });
+//Delete a book
+app.delete('/books/:id', (req, res) => {
+  client.query(`
+    DELETE FROM books
+    WHERE id=${req.params.id}`)
+    .then(() => res.send(204))
+    .catch(console.error);
+});
+
+//Update a book
+app.put('/books', bodyParser, (req, res) => {
+  let {title, author, isbn, url, description} = req.body;
+  client.query(`
+    UPDATE books
+    SET title=$1, author=$2, isbn=$3, url=$4, description=$5
+    WHERE id=${req.body.book_id}`,
+  [title, author, isbn, url, description]
+  )
+    .then(res.sendStatus(200))
+    .catch(console.error)
+});
+
 
 createTable();
 
@@ -79,11 +74,11 @@ function createTable() {
   client.query(`
     CREATE TABLE IF NOT EXISTS books(
       id SERIAL PRIMARY KEY,
-      book_title VARCHAR(256),
+      title VARCHAR(256),
       author VARCHAR(256),
       isbn VARCHAR(256),
-      pic_url VARCHAR(256),
-      descr text NOT NULL
+      url VARCHAR(256),
+      description text NOT NULL
     );`
   )
   .then(function(response) {
