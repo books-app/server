@@ -1,35 +1,23 @@
 'use strict';
 
-//ALLOWS EVERYONE TO VIEW
-const cors = require('cors');
-// ALLOWS SERVER SIDE JS TO BE EXECUTED
-const express = require('express');
-// POSTGRES DBMS
-const pg = require('pg');
-// ALLOWS FOR PARSEING OF INCOMPING API POSTS AND PUTS, MANIPULATES REQ BODY BEFORE IT HITS SERVER
-const bodyParser = require('body-parser');
-const app = express();
-const PORT = process.env.PORT || 3000;
-//ALLOWS NODE TO INTERACT WITH LOCAL FILES CUS DB IS RUNNING LOCALLY
 
-const conString = 'postgres://localhost:5432/books_app';
-// const conString = process.env.DATABASE_URL;
-const client = new pg.Client(conString);
-// HOW WE CONNECT TO OUR DB
+const express = require('express');
+const cors = require('cors');
+const pg = require('pg');
+const bodyParser = require('body-parser').urlencoded({extended: true});
+
+
+const app = express();
+const PORT = process.env.PORT;
+
+const client = new pg.Client(process.env.DATABASE_URL);
+
 client.connect();
 
-// ***  MIDDLEWARE  ***
-// CROSS ORIGIN SCRIPTING
-app.use(cors());
-// TELLS BODYPARSER TO USE JSON WHEN POSTING AND PUTING DATA INTO DB
-app.use(bodyParser.json());
-// ALLOWS BODYPARSER TO PARSE NESTED OBJECTS
-app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-    res.send('hello');
-})
-// ROUTES 
+app.use(cors());
+
+
 
 app.get('/v1/books', function(req, res) {
     // console.log('app.get /v1/books');
