@@ -20,10 +20,9 @@ app.use(cors());
 
 
 app.get('/v1/books', function(req, res) {
-    // console.log('app.get /v1/books');
     client.query('SELECT * FROM books;')
     .then(function(data) {
-      res.send(data.rows);
+      res.send(data);
     })
     .catch(function(err) {
       console.error(err);
@@ -31,10 +30,9 @@ app.get('/v1/books', function(req, res) {
   });
 
 app.get('/v1/books/:book_id', function (req,res) {
-  // console.log(req);
   client.query(`SELECT * FROM books WHERE book_id = ${req.params.book_id};`)
   .then(function(data){
-    res.send(data.rows);
+    res.send(data);
   })
   .catch(function(err) {
     console.log(err);
@@ -64,7 +62,6 @@ app.post('/v1/books', function(req, res) {
     });
 });
 
-// DELETE
 app.delete('/v1/books/:book_id', function(req, res) {
   console.log(req.params.book_id);
     client.query(`DELETE FROM books WHERE book_id=$1`,
@@ -74,8 +71,7 @@ app.delete('/v1/books/:book_id', function(req, res) {
     .catch(console.error);
 });
 
-// UPDATE/PUT
-app.put('/v1/books/:book_id/edit', function(req, res) {
+app.put('/v1/books/:book_id', function(req, res) {
   console.log(req.body);
   client.query(`UPDATE * FROM books WHERE book_id = ${req.params.book_id};`)
     .then(() => {
@@ -101,7 +97,7 @@ app.put('/v1/books/:book_id/edit', function(req, res) {
 createTable();
 
 app.listen(PORT, () => {
-    console.log('SERVER started on port:', PORT);
+    console.log(PORT);
 });
 
 function createTable() {
